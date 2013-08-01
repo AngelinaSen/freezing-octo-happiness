@@ -20,7 +20,6 @@ public class UserDAOImpl implements UserDAO {
     //public static final int nList = 50;
     
     public UserDAOImpl(){
-        
         file = new File(fileName);
         if (!file.exists()){
             try {
@@ -89,11 +88,6 @@ public class UserDAOImpl implements UserDAO {
         return null;
     }
 
-    private InputStream FileInputStream(File file2) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     @Override
     public boolean delete(User user) {
         
@@ -156,7 +150,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public Collection<User> getAllUsers() {
+    public List<User> getAllUsers() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             

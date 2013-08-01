@@ -1,6 +1,6 @@
 package ru.mrgrechkinn.java.foh.dao;
 
-import java.util.Collection;
+import java.util.List;
 
 import ru.mrgrechkinn.java.foh.model.User;
 
@@ -16,6 +16,6 @@ public interface UserDAO {
 
     boolean delete(User userEntity);
 
-    Collection<User> getAllUsers();
+    List<User> getAllUsers();
 
 }
