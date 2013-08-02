@@ -37,6 +37,25 @@ public class UserDAOImpl implements UserDAO {
         try {
             FileWriter writer = new FileWriter(file, true);
             
+            List<String> list = new ArrayList<String>();
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            if (reader.readLine() != null) {
+                for (String s = reader.readLine(); s != null; s = reader.readLine()) {
+                    list.add(s);
+                }
+                
+                if (list.size() != 3) {
+                    user.setId(Long.parseLong(list.get(list.size() - 4)) + 1);
+                }
+                else {
+                    user.setId(2);
+                }
+                
+            }
+            else {
+                user.setId(1);
+            }
+            
             writer.write(String.valueOf(user.getId()) + "\n");
             writer.write(user.getLogin() + "\n");
             writer.write(user.getPassword() + "\n");
@@ -160,9 +179,9 @@ public class UserDAOImpl implements UserDAO {
                 }
                 for (int i = 0; i < list.size(); ) {
                     user.setId(Long.parseLong(list.get(i)));
-                    user.setLogin(list.get(i));
+                    user.setLogin(list.get(i + 1));
                     user.setPassword(list.get(i + 2));
-                    user.setFullName(list.get(i + 1));
+                    user.setFullName(list.get(i + 3));
                     listUser.add(user);
                     i += 4;
                 }
