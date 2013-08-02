@@ -12,12 +12,13 @@ import java.util.Collection;
 import java.util.List;
 
 import ru.mrgrechkinn.java.foh.model.User;
+import ru.mrgrechkinn.java.foh.util.IOUtils;
 
 public class UserDAOImpl implements UserDAO {
 
-    public static final String fileName = "E:\\development\\freezing-octo-happiness\\test.txt";
+    public static final String fileName = "test.txt";
     private File file;
-    //public static final int nList = 50;
+    
     
     public UserDAOImpl(){
         file = new File(fileName);
@@ -35,13 +36,13 @@ public class UserDAOImpl implements UserDAO {
     public boolean save(User user) {
         try {
             FileWriter writer = new FileWriter(file, true);
-            //BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+            
             writer.write(String.valueOf(user.getId()) + "\n");
             writer.write(user.getLogin() + "\n");
             writer.write(user.getPassword() + "\n");
             writer.write(user.getFullName() + "\n");
-            //writer.write("\n");
-            writer.close();
+            
+            IOUtils.closeQuietly(writer);
             return true;
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
@@ -61,26 +62,29 @@ public class UserDAOImpl implements UserDAO {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             
             List<String> list = new ArrayList<String>();
-            for (int i = 0; i < 50; i ++){
-            //while (reader.readLine() != null) {
-                    list.add(reader.readLine());
-            }/*
-            for (String s: list) {
-                System.out.println(s);
-            }
-            */
             
-            for (int i = 1; i < list.size(); ){
-                if (Long.parseLong(list.get(i - 1)) == id){
-                    user.setId(Long.parseLong(list.get(i - 1)));
-                    user.setLogin(list.get(i));
-                    user.setPassword(list.get(i + 1));
-                    user.setFullName(list.get(i + 2)); break;
+            for (String s = reader.readLine(); s != null; s = reader.readLine()) {
+                    list.add(s);
+            }
+            
+            for (int i = 0; i < list.size();) {
+                if (Long.parseLong(list.get(i)) == id) {
+                    System.out.println(list.get(i + 1));
                 }
                 i += 4;
             }
             
-            reader.close();
+            for (int i = 0; i < list.size(); ){
+                if (Long.parseLong(list.get(i)) == id){
+                    user.setId(id);
+                    user.setLogin(list.get(i + 1));
+                    user.setPassword(list.get(i + 2));
+                    user.setFullName(list.get(i + 3)); break;
+                }
+                i += 4;
+            }
+            
+            IOUtils.closeQuietly(reader);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -99,24 +103,14 @@ public class UserDAOImpl implements UserDAO {
             List <String> list = new ArrayList<String>();
             List <String> listTwo = new ArrayList<String>();
             
-            //for (int i = 0; i < nList; i++){
             try {
-                while (reader.readLine() != null) {
-                    String line;
-                    try {
-                        line = reader.readLine();
-                        if (line != null){
-                            list.add(line);
-                        }
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    
+                for (String s = reader.readLine(); s != null; s = reader.readLine()) {
+                    list.add(s);
                 }
-            } catch (IOException e1) {
+                IOUtils.closeQuietly(reader);
+            } catch (IOException e) {
                 // TODO Auto-generated catch block
-                e1.printStackTrace();
+                e.printStackTrace();
             }
             
             for (int i = 1; i < list.size(); ){
@@ -135,13 +129,14 @@ public class UserDAOImpl implements UserDAO {
                 for (int i = 0; i < listTwo.size(); i++){
                     writer.write(listTwo.get(i) + "\n");
                 }
-                writer.close();
+                IOUtils.closeQuietly(writer);
+                return true;
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            //почему здесь не могу закрыть поток?
-            //reader.close();
+            
+            IOUtils.closeQuietly(reader);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -160,25 +155,18 @@ public class UserDAOImpl implements UserDAO {
             
             
             try {
-                while (reader.readLine() != null){
-                    list.add(reader.readLine());
-                }/*
-                for (String x: list) {
-                    System.out.println(x);
-                }*/
+                for (String s = reader.readLine(); s != null; s = reader.readLine()) {
+                    list.add(s);
+                }
                 for (int i = 0; i < list.size(); ) {
-                    //user.setId(Long.parseLong(list.get(i)));
+                    user.setId(Long.parseLong(list.get(i)));
                     user.setLogin(list.get(i));
-                    //user.setPassword(list.get(i + 2));
+                    user.setPassword(list.get(i + 2));
                     user.setFullName(list.get(i + 1));
                     listUser.add(user);
-                    i += 2;
+                    i += 4;
                 }
-                /*
-                for (String s: list){
-                    System.out.println(s);
-                }*/
-                reader.close();
+                IOUtils.closeQuietly(reader);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
