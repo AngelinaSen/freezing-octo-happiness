@@ -15,7 +15,7 @@ import ru.mrgrechkinn.java.foh.model.User;
 
 public class UserDAOImpl implements UserDAO {
 
-    public static final String fileName = "D:\\endrysan\\text.txt";
+    public static final String fileName = "E:\\development\\freezing-octo-happiness\\test.txt";
     private File file;
     //public static final int nList = 50;
     
@@ -42,6 +42,7 @@ public class UserDAOImpl implements UserDAO {
             writer.write(user.getFullName() + "\n");
             //writer.write("\n");
             writer.close();
+            return true;
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -54,27 +55,27 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserById(long id) {
+        User user = new User();
         try {
            
             BufferedReader reader = new BufferedReader(new FileReader(file));
             
             List<String> list = new ArrayList<String>();
-            //for (int i = 0; i < nList; i ++){
-            while (reader.readLine() != null) {
-                String line;
-                if ((line = reader.readLine()) != null)
-                {
-                    list.add(line);
-                }
+            for (int i = 0; i < 50; i ++){
+            //while (reader.readLine() != null) {
+                    list.add(reader.readLine());
+            }/*
+            for (String s: list) {
+                System.out.println(s);
             }
+            */
             
-            //System.out.println(list.size());
             for (int i = 1; i < list.size(); ){
                 if (Long.parseLong(list.get(i - 1)) == id){
-                    System.out.println(list.get(i));
-                }
-                else{
-                    System.out.print("");
+                    user.setId(Long.parseLong(list.get(i - 1)));
+                    user.setLogin(list.get(i));
+                    user.setPassword(list.get(i + 1));
+                    user.setFullName(list.get(i + 2)); break;
                 }
                 i += 4;
             }
@@ -85,7 +86,7 @@ public class UserDAOImpl implements UserDAO {
             e.printStackTrace();
         }
         
-        return null;
+        return user;
     }
 
     @Override
@@ -151,19 +152,32 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getAllUsers() {
+        List <User> listUser = new ArrayList<User>();
+        List <String> list = new ArrayList<String>();
+        User user = new User();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             
-            List <String> list = new ArrayList<String>();
             
             try {
                 while (reader.readLine() != null){
                     list.add(reader.readLine());
+                }/*
+                for (String x: list) {
+                    System.out.println(x);
+                }*/
+                for (int i = 0; i < list.size(); ) {
+                    //user.setId(Long.parseLong(list.get(i)));
+                    user.setLogin(list.get(i));
+                    //user.setPassword(list.get(i + 2));
+                    user.setFullName(list.get(i + 1));
+                    listUser.add(user);
+                    i += 2;
                 }
-                
+                /*
                 for (String s: list){
                     System.out.println(s);
-                }
+                }*/
                 reader.close();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -174,7 +188,7 @@ public class UserDAOImpl implements UserDAO {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return null;
+        return listUser;
     }
     
     
