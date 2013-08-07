@@ -42,7 +42,7 @@ public class UserDAOImpl implements UserDAO {
             List<String> listUser = new ArrayList<String>();
             BufferedReader reader = new BufferedReader(new FileReader(file));
             
-            
+            // И как тут список может быть не пустым?? переписать, так как всем будут проставляться значения id в 1
             if (list.size() != 0) {
                 user.setId(Long.parseLong(list.get(list.size() - 4)) + 1);
             }
@@ -53,14 +53,15 @@ public class UserDAOImpl implements UserDAO {
             for (String s = reader.readLine(); s != null; s = reader.readLine()) {
                 list.add(s);
             }
-            
+
+            // ты считал все значения в прошлом цикле, это условие будет всегда истиной
             if (reader.readLine() == null) {
                 listUser.add(String.valueOf(user.getId()));
                 listUser.add(user.getLogin());
                 listUser.add(user.getPassword());
                 listUser.add(user.getFullName());
             }
-            
+
             for (int i = 0; i < list.size();) {
                 if (!user.getLogin().equals(list.get(i))) {
                     listUser.add(list.get(i));
@@ -69,6 +70,7 @@ public class UserDAOImpl implements UserDAO {
                     listUser.add(list.get(i + 3));
                 }
                 else {
+                    // во здесь у тебя ошибка, в listUser у тебя будет больше значений чем на самом деле 
                     listUser.add(list.get(i));
                     listUser.add(list.get(i + 1));
                     listUser.add(user.getPassword());
@@ -76,7 +78,7 @@ public class UserDAOImpl implements UserDAO {
                 }
                 i += 4;
             }
-            
+            // лучше сначала закрыть тут reader. потом только тут открывать writer а не в начале метода
             for (int i = 0; i < listUser.size(); i++) {
                 writer.write(listUser.get(i) + "\n");
             }
