@@ -35,32 +35,53 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean save(User user) {
         try {
-            FileWriter writer = new FileWriter(file, true);
+            //FileWriter writer = new FileWriter(file, true);
+            FileWriter writer = new FileWriter(file);
             
             List<String> list = new ArrayList<String>();
+            List<String> listUser = new ArrayList<String>();
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            if (reader.readLine() != null) {
-                for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-                    list.add(s);
-                }
-                
-                if (list.size() != 3) {
-                    user.setId(Long.parseLong(list.get(list.size() - 4)) + 1);
-                }
-                else {
-                    user.setId(2);
-                }
-                
+            
+            
+            if (list.size() != 0) {
+                user.setId(Long.parseLong(list.get(list.size() - 4)) + 1);
             }
             else {
                 user.setId(1);
             }
             
-            writer.write(String.valueOf(user.getId()) + "\n");
-            writer.write(user.getLogin() + "\n");
-            writer.write(user.getPassword() + "\n");
-            writer.write(user.getFullName() + "\n");
+            for (String s = reader.readLine(); s != null; s = reader.readLine()) {
+                list.add(s);
+            }
             
+            if (reader.readLine() == null) {
+                listUser.add(String.valueOf(user.getId()));
+                listUser.add(user.getLogin());
+                listUser.add(user.getPassword());
+                listUser.add(user.getFullName());
+            }
+            
+            for (int i = 0; i < list.size();) {
+                if (!user.getLogin().equals(list.get(i))) {
+                    listUser.add(list.get(i));
+                    listUser.add(list.get(i + 1));
+                    listUser.add(list.get(i + 2));
+                    listUser.add(list.get(i + 3));
+                }
+                else {
+                    listUser.add(list.get(i));
+                    listUser.add(list.get(i + 1));
+                    listUser.add(user.getPassword());
+                    listUser.add(user.getFullName());
+                }
+                i += 4;
+            }
+            
+            for (int i = 0; i < listUser.size(); i++) {
+                writer.write(listUser.get(i) + "\n");
+            }
+            
+            IOUtils.closeQuietly(reader);
             IOUtils.closeQuietly(writer);
             return true;
         } catch (FileNotFoundException e) {

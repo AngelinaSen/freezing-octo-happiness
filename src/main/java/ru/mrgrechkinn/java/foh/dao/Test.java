@@ -9,9 +9,9 @@ public class Test {
         UserDAOImpl dao = new UserDAOImpl();
         User one = new User();
         
-        one.setLogin("Login1");
-        one.setPassword("Password");
-        one.setFullName("FIO");
+        one.setLogin("Login2");
+        one.setPassword("Password77");
+        one.setFullName("FIO777");
         
         dao.save(one);
         
