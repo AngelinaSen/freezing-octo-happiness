@@ -35,13 +35,15 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean save(User user) {
         try {
-            //FileWriter writer = new FileWriter(file, true);
-            FileWriter writer = new FileWriter(file);
             
             List<String> list = new ArrayList<String>();
             List<String> listUser = new ArrayList<String>();
+            
             BufferedReader reader = new BufferedReader(new FileReader(file));
             
+            for (String s = reader.readLine(); s != null; s = reader.readLine()) {
+                list.add(s);
+            }
             // И как тут список может быть не пустым?? переписать, так как всем будут проставляться значения id в 1
             if (list.size() != 0) {
                 user.setId(Long.parseLong(list.get(list.size() - 4)) + 1);
@@ -49,21 +51,26 @@ public class UserDAOImpl implements UserDAO {
             else {
                 user.setId(1);
             }
-            
-            for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-                list.add(s);
-            }
-
             // ты считал все значения в прошлом цикле, это условие будет всегда истиной
-            if (reader.readLine() == null) {
-                listUser.add(String.valueOf(user.getId()));
-                listUser.add(user.getLogin());
-                listUser.add(user.getPassword());
-                listUser.add(user.getFullName());
+            if (list.size() == 0) {
+                list.add(String.valueOf(user.getId()));
+                list.add(user.getLogin());
+                list.add(user.getPassword());
+                list.add(user.getFullName());
             }
-
+            boolean testLogin = false;
+            for (int i = 0; i < list.size(); ) {
+                if (!user.getLogin().equals(list.get(i + 1))) {
+                    testLogin = true;
+                }
+                else {
+                    testLogin = false; break;
+                }
+                i += 4;
+            }
+            
             for (int i = 0; i < list.size();) {
-                if (!user.getLogin().equals(list.get(i))) {
+                if (!user.getLogin().equals(list.get(i + 1))) {
                     listUser.add(list.get(i));
                     listUser.add(list.get(i + 1));
                     listUser.add(list.get(i + 2));
@@ -78,12 +85,20 @@ public class UserDAOImpl implements UserDAO {
                 }
                 i += 4;
             }
+            if (testLogin) {
+                listUser.add(String.valueOf(user.getId()));
+                listUser.add(user.getLogin());
+                listUser.add(user.getPassword());
+                listUser.add(user.getFullName());
+            }
+            IOUtils.closeQuietly(reader);
+            //FileWriter writer = new FileWriter(file, true);
+            FileWriter writer = new FileWriter(file);
             // лучше сначала закрыть тут reader. потом только тут открывать writer а не в начале метода
             for (int i = 0; i < listUser.size(); i++) {
                 writer.write(listUser.get(i) + "\n");
             }
             
-            IOUtils.closeQuietly(reader);
             IOUtils.closeQuietly(writer);
             return true;
         } catch (FileNotFoundException e) {

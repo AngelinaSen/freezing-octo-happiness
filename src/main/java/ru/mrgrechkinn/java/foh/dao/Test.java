@@ -10,8 +10,8 @@ public class Test {
         User one = new User();
         
         one.setLogin("Login2");
-        one.setPassword("Password77");
-        one.setFullName("FIO777");
+        one.setPassword("Password");
+        one.setFullName("FIO");
         
         dao.save(one);
         
