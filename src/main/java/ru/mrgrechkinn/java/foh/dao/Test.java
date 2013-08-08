@@ -9,20 +9,18 @@ public class Test {
         UserDAOImpl dao = new UserDAOImpl();
         User one = new User();
         
-        one.setId(2);
-        one.setLogin("Login2");
+        one.setLogin("Login5");
         one.setPassword("Password");
         one.setFullName("FIO");
         
         //dao.save(one);
         
-        //dao.getUserById(4);
+        dao.getUserById(3);
         
-        dao.delete(one);
+        //dao.delete(one);
         
         //dao.getAllUsers();
         
-        //System.out.println(one.getId() + " " + one.getLogin() + " " + one.getPassword() + " " + one.getFullName());
     }
 
 }
