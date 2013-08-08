@@ -18,8 +18,7 @@ public class UserDAOImpl implements UserDAO {
 
     public static final String fileName = "test.txt";
     private File file;
-    
-    
+
     public UserDAOImpl(){
         file = new File(fileName);
         if (!file.exists()){
@@ -34,71 +33,49 @@ public class UserDAOImpl implements UserDAO {
     
     @Override
     public boolean save(User user) {
+        boolean isNewUser = true;
+        long lastUserId = 0;
+        List<User> users = new ArrayList<User>();
         try {
-            
-            List<String> list = new ArrayList<String>();
-            List<String> listUser = new ArrayList<String>();
-            
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            
+            // Считываем пользователей
             for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-                list.add(s);
-            }
-            // И как тут список может быть не пустым?? переписать, так как всем будут проставляться значения id в 1
-            if (list.size() != 0) {
-                user.setId(Long.parseLong(list.get(list.size() - 4)) + 1);
-            }
-            else {
-                user.setId(1);
-            }
-            // ты считал все значения в прошлом цикле, это условие будет всегда истиной
-            if (list.size() == 0) {
-                list.add(String.valueOf(user.getId()));
-                list.add(user.getLogin());
-                list.add(user.getPassword());
-                list.add(user.getFullName());
-            }
-            boolean testLogin = false;
-            for (int i = 0; i < list.size(); ) {
-                if (!user.getLogin().equals(list.get(i + 1))) {
-                    testLogin = true;
+                User newUser = new User();
+                long userId = Long.parseLong(s);
+                if (userId > lastUserId) {
+                    lastUserId = userId;
                 }
-                else {
-                    testLogin = false; break;
-                }
-                i += 4;
+                newUser.setId(userId);
+                newUser.setLogin(reader.readLine());
+                newUser.setPassword(reader.readLine());
+                newUser.setFullName(reader.readLine());
+                users.add(newUser);
             }
-            
-            for (int i = 0; i < list.size();) {
-                if (!user.getLogin().equals(list.get(i + 1))) {
-                    listUser.add(list.get(i));
-                    listUser.add(list.get(i + 1));
-                    listUser.add(list.get(i + 2));
-                    listUser.add(list.get(i + 3));
+
+            if (!users.isEmpty()) {
+                for (User u : users) {
+                    if (u.getLogin().equals(user.getLogin())) {
+                        u.setFullName(user.getFullName());
+                        u.setPassword(user.getPassword());
+                        isNewUser = false;
+                        break;
+                    }
                 }
-                else {
-                    // во здесь у тебя ошибка, в listUser у тебя будет больше значений чем на самом деле 
-                    listUser.add(list.get(i));
-                    listUser.add(list.get(i + 1));
-                    listUser.add(user.getPassword());
-                    listUser.add(user.getFullName());
-                }
-                i += 4;
             }
-            if (testLogin) {
-                listUser.add(String.valueOf(user.getId()));
-                listUser.add(user.getLogin());
-                listUser.add(user.getPassword());
-                listUser.add(user.getFullName());
+
+            if (isNewUser) {
+                user.setId(lastUserId + 1);
+                users.add(user);
             }
             IOUtils.closeQuietly(reader);
-            //FileWriter writer = new FileWriter(file, true);
+
             FileWriter writer = new FileWriter(file);
-            // лучше сначала закрыть тут reader. потом только тут открывать writer а не в начале метода
-            for (int i = 0; i < listUser.size(); i++) {
-                writer.write(listUser.get(i) + "\n");
+            for (User u : users) {
+                writer.write(u.getId() + "\n");
+                writer.write(u.getLogin() + "\n");
+                writer.write(u.getPassword() + "\n");
+                writer.write(u.getFullName() + "\n");
             }
-            
             IOUtils.closeQuietly(writer);
             return true;
         } catch (FileNotFoundException e) {
