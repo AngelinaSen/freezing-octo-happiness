@@ -6,9 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import ru.mrgrechkinn.java.foh.model.User;
@@ -38,7 +36,7 @@ public class UserDAOImpl implements UserDAO {
         List<User> users = new ArrayList<User>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            // Считываем пользователей
+            
             for (String s = reader.readLine(); s != null; s = reader.readLine()) {
                 User newUser = new User();
                 long userId = Long.parseLong(s);
@@ -68,7 +66,7 @@ public class UserDAOImpl implements UserDAO {
                 users.add(user);
             }
             IOUtils.closeQuietly(reader);
-
+            
             FileWriter writer = new FileWriter(file);
             for (User u : users) {
                 writer.write(u.getId() + "\n");
@@ -94,28 +92,25 @@ public class UserDAOImpl implements UserDAO {
         try {
            
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            
-            List<String> list = new ArrayList<String>();
+            List<User> users = new ArrayList<User>();
             
             for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-                    list.add(s);
+                User newUser = new User();
+                newUser.setId(Long.parseLong(s));
+                newUser.setLogin(reader.readLine());
+                newUser.setPassword(reader.readLine());
+                newUser.setFullName(reader.readLine());
+                users.add(newUser);
             }
             
-            for (int i = 0; i < list.size();) {
-                if (Long.parseLong(list.get(i)) == id) {
-                    System.out.println(list.get(i + 1));
-                }
-                i += 4;
-            }
             
-            for (int i = 0; i < list.size(); ){
-                if (Long.parseLong(list.get(i)) == id){
+            for (User u : users) {
+                if (u.getId() == id) {
                     user.setId(id);
-                    user.setLogin(list.get(i + 1));
-                    user.setPassword(list.get(i + 2));
-                    user.setFullName(list.get(i + 3)); break;
+                    user.setLogin(u.getLogin());
+                    user.setPassword(u.getPassword());
+                    user.setFullName(u.getFullName());
                 }
-                i += 4;
             }
             
             IOUtils.closeQuietly(reader);
@@ -134,34 +129,37 @@ public class UserDAOImpl implements UserDAO {
             
             BufferedReader reader = new BufferedReader(new FileReader(file));
             
-            List <String> list = new ArrayList<String>();
-            List <String> listTwo = new ArrayList<String>();
+            List<User> users = new ArrayList<User>();
+            List<User> usersChange = new ArrayList<User>();
             
             try {
                 for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-                    list.add(s);
+                    User newUser = new User();
+                    newUser.setId(Long.parseLong(s));
+                    newUser.setLogin(reader.readLine());
+                    newUser.setPassword(reader.readLine());
+                    newUser.setFullName(reader.readLine());
+                    users.add(newUser);
                 }
                 IOUtils.closeQuietly(reader);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            
-            for (int i = 1; i < list.size(); ){
-                if (!user.getLogin().equals(list.get(i))){
-                    listTwo.add(list.get(i - 1));
-                    listTwo.add(list.get(i));
-                    listTwo.add(list.get(i + 1));
-                    listTwo.add(list.get(i + 2));
-                }
-                i += 4;
-            }
-            
-            try {
-                FileWriter writer = new FileWriter(file);
                 
-                for (int i = 0; i < listTwo.size(); i++){
-                    writer.write(listTwo.get(i) + "\n");
+                for (User u: users) {
+                    User newUser = new User();
+                    if (!u.getLogin().equals(user.getLogin())) {
+                        newUser.setId(u.getId());
+                        newUser.setLogin(u.getLogin());
+                        newUser.setPassword(u.getPassword());
+                        newUser.setFullName(u.getFullName());
+                        usersChange.add(newUser);
+                        
+                    }
+                }
+                FileWriter writer = new FileWriter(file);
+                for (User u: usersChange) {
+                    writer.write(u.getId() + "\n");
+                    writer.write(u.getLogin() + "\n");
+                    writer.write(u.getPassword() + "\n");
+                    writer.write(u.getFullName() + "\n");
                 }
                 IOUtils.closeQuietly(writer);
                 return true;
@@ -170,7 +168,6 @@ public class UserDAOImpl implements UserDAO {
                 e.printStackTrace();
             }
             
-            IOUtils.closeQuietly(reader);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -181,24 +178,22 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getAllUsers() {
-        List <User> listUser = new ArrayList<User>();
-        List <String> list = new ArrayList<String>();
-        User user = new User();
+        
+        List<User> listUser = new ArrayList<User>();
+        
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             
             
             try {
+                
                 for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-                    list.add(s);
-                }
-                for (int i = 0; i < list.size(); ) {
-                    user.setId(Long.parseLong(list.get(i)));
-                    user.setLogin(list.get(i + 1));
-                    user.setPassword(list.get(i + 2));
-                    user.setFullName(list.get(i + 3));
-                    listUser.add(user);
-                    i += 4;
+                    User newUser = new User();
+                    newUser.setId(Long.parseLong(s));
+                    newUser.setLogin(reader.readLine());
+                    newUser.setPassword(reader.readLine());
+                    newUser.setFullName(reader.readLine());
+                    listUser.add(newUser);
                 }
                 IOUtils.closeQuietly(reader);
             } catch (IOException e) {

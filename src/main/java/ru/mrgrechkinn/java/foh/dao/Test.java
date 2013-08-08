@@ -9,13 +9,13 @@ public class Test {
         UserDAOImpl dao = new UserDAOImpl();
         User one = new User();
         
-        one.setLogin("Login2");
+        one.setLogin("Login5");
         one.setPassword("Password");
         one.setFullName("FIO");
         
-        dao.save(one);
+        //dao.save(one);
         
-        //dao.getUserById(1);
+        dao.getUserById(3);
         
         //dao.delete(one);
         
