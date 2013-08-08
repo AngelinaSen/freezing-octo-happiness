@@ -88,12 +88,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserById(long id) {
-        User user = new User();
         try {
-           
             BufferedReader reader = new BufferedReader(new FileReader(file));
             List<User> users = new ArrayList<User>();
-            
             for (String s = reader.readLine(); s != null; s = reader.readLine()) {
                 User newUser = new User();
                 newUser.setId(Long.parseLong(s));
@@ -109,14 +106,11 @@ public class UserDAOImpl implements UserDAO {
                     return u;
                 }
             }
-            return null;
-            
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        return user;
+        return null;
     }
 
     @Override
