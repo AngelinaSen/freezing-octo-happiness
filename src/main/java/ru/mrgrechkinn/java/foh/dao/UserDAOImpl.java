@@ -102,18 +102,15 @@ public class UserDAOImpl implements UserDAO {
                 newUser.setFullName(reader.readLine());
                 users.add(newUser);
             }
-            
+            IOUtils.closeQuietly(reader);
             
             for (User u : users) {
                 if (u.getId() == id) {
-                    user.setId(id);
-                    user.setLogin(u.getLogin());
-                    user.setPassword(u.getPassword());
-                    user.setFullName(u.getFullName());
+                    return u;
                 }
             }
+            return null;
             
-            IOUtils.closeQuietly(reader);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
