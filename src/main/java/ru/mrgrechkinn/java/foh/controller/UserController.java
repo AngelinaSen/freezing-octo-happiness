@@ -8,11 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import ru.mrgrechkinn.java.foh.dao.UserDAOImpl;
 import ru.mrgrechkinn.java.foh.model.User;
@@ -30,10 +27,21 @@ public class UserController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        //JButton clickedButton = (JButton) e.getSource();
+        if (e.getSource() == parent.buttonRegister) {
+            onRegister(e);
+        }
+        if (e.getSource() == parent.buttonLogin) {
+            onLogin(e);
+        }
+    }
+    private void onRegister(ActionEvent e) {
+        
+        parent.labelNotification.setText("this button don't work...");
+    }
+    private void onLogin(ActionEvent e) {
         
         String displayFieldTextLogin = parent.fieldLogin.getText();
-        String displayFieldTextPassword = parent.fieldPassword.getText(); 
+        char[] displayFieldTextPassword = parent.fieldPassword.getPassword(); 
         
         File file = new File(UserDAOImpl.fileName);
         List<User> users = new ArrayList<User>();
@@ -51,15 +59,15 @@ public class UserController implements ActionListener {
             IOUtils.closeQuietly(reader);
             
             for (User u: users) {
-                if (displayFieldTextLogin.equals(u.getLogin()) && displayFieldTextPassword.equals(u.getPassword())) {
-                    //JOptionPane.showConfirmDialog(null, u.getLogin() + " logged", "Confirmation window", JOptionPane.PLAIN_MESSAGE);
+                if (displayFieldTextLogin.equals(u.getLogin()) && u.getPassword().equals(new String(displayFieldTextPassword))) {
                     parent.labelNotification.setText(u.getLogin() + " logged");
                     break;
                 }
                 else {
-                    parent.labelNotification.setText("* user name or login is incorrect");
+                    parent.labelNotification.setText("user name or login is incorrect");
                 }
             }
+            Arrays.fill(displayFieldTextPassword, (char) 0);
             
         } catch (FileNotFoundException e1) {
             // TODO Auto-generated catch block
@@ -68,7 +76,6 @@ public class UserController implements ActionListener {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        
     }
 
 }

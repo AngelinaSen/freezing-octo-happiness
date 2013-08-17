@@ -1,10 +1,8 @@
 package ru.mrgrechkinn.java.foh.view;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.io.File;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,15 +14,17 @@ import javax.swing.JTextField;
 import ru.mrgrechkinn.java.foh.controller.UserController;
 
 
-public class UserView {
+public class UserView extends JFrame {
     
     private JPanel windowContent;
     public JTextField fieldLogin;
     public JPasswordField fieldPassword;
     public JLabel labelNotification;
-    private JButton buttonRegister;
-    private JButton buttonLogin;
+    public JButton buttonRegister;
+    public JButton buttonLogin;
     private File file;
+    private static final int DEFAULT_WIDTH = 300;
+    private static final int DEFAULT_HEIGHT = 300;
     
     public UserView() {
         
@@ -44,6 +44,7 @@ public class UserView {
         
         JLabel labelPassword = new JLabel("Password: ");
         fieldPassword = new JPasswordField(10);
+        fieldPassword.setEchoChar(' ');
         p2.add(labelPassword);
         p2.add(fieldPassword);
         
@@ -68,43 +69,12 @@ public class UserView {
         JFrame myWindow = new JFrame("Login window");
         myWindow.setContentPane(windowContent);
         myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myWindow.setSize(300, 300);
+        myWindow.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         myWindow.setVisible(true);
-        
-        /*
-        windowContent = new JPanel();
-        windowContent.setLayout(new BoxLayout(windowContent, BoxLayout.PAGE_AXIS));
-        
-        Box box1 = Box.createHorizontalBox();
-        JLabel labelLogin = new JLabel("Login: ");
-        fieldLogin = new JTextField(10);
-        box1.add(labelLogin);
-        box1.add(fieldLogin);
-        
-        Box box2 = Box.createHorizontalBox();
-        JLabel labelPassword = new JLabel("Password: ");
-        fieldPassword = new JPasswordField(10);
-        box2.add(labelPassword);
-        box2.add(fieldPassword);
-        
-        Box box3 = Box.createHorizontalBox();
-        buttonRegister = new JButton("Register");
-        buttonLogin = new JButton("Login");
-        box3.add(buttonRegister);
-        box3.add(buttonLogin);
-        
-        windowContent.add(box1);
-        windowContent.add(box2);
-        windowContent.add(box3);
-        
-        JFrame myWindow = new JFrame("Login window");
-        myWindow.setContentPane(windowContent);
-        myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myWindow.setSize(300, 300);
-        myWindow.setVisible(true);*/
         
         UserController usercontroller = new UserController(this);
         
+        buttonRegister.addActionListener(usercontroller);
         buttonLogin.addActionListener(usercontroller);
         
     }
