@@ -16,6 +16,7 @@ import ru.mrgrechkinn.java.foh.model.Entity;
 
 public class ArticleDAOImpl implements ArticleDAO {
 
+    // Мы решили, что каждая статья будет сохраняться в отдельном файле
 	public static final String fileName = "C:\\123.txt";
 	private File file;
 
@@ -116,6 +117,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		return false;
 	}
 
+	// TODO: WTF??? Не надо выводить на консоль, а возвращать статью как объект, чтобы можно было использовать
 	@Override
 	public Entity getArticleById(long id) {
 
@@ -150,6 +152,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		return null;
 	}
 
+	// TODO: WTF??? Не надо выводить всё на консоль, а возвращать массив статей, чтобы можно было их использовать
 	@Override
 	public List<Entity> getAllArticles() {
 

@@ -36,7 +36,6 @@ public class User implements Entity {
         return id;
     }
     @Override
-    
     public void setId(long id) {
         this.id = id;
     }

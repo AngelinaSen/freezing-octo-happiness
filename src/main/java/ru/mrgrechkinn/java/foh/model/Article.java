@@ -1,11 +1,13 @@
 package ru.mrgrechkinn.java.foh.model;
 
+//TODO: Класс должен реализовывать интерфейс Entity, я об этом писал в описании задачи
 public class Article {
 	
+    // TODO: Зачем ты использовал static модификатор, это не правильно (почитать и переписать), отписать мне
+    // почему это не правильно
 	private static String id;
     private static String content;
     private static String subject;
-    
     
     public static String getId() {
         return id;
