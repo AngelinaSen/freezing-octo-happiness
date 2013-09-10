@@ -1,23 +1,15 @@
 package ru.mrgrechkinn.java.foh.model;
 
-//TODO: Класс должен реализовывать интерфейс Entity, я об этом писал в описании задачи
-public class Article {
+public class Article implements Entity {
 	
-    // TODO: Зачем ты использовал static модификатор, это не правильно (почитать и переписать), отписать мне
-    // почему это не правильно
-	private static String id;
-    private static String content;
-    private static String subject;
+    // TODO: потому что в данном случае переменные относились к классу а не к объектам
+    // 
+	private  long id;
+    private  String content;
+    private  String subject;      
+   
     
-    public static String getId() {
-        return id;
-    }
-    
-    public void setId(String id) {
-        this.id = id;
-    }
-    
-    public static String getContent() {
+    public  String getContent() {
         return content;
     }
     
@@ -25,13 +17,24 @@ public class Article {
         this.content = content;
     }
     
-    public static String getSubject() {
+    public String getSubject() {
         return subject;
     }
     
     public void setSubject(String subject) {
         this.subject = subject;
     }
+
+	@Override
+	public long getId() {
+		return id;		
+	}
+
+	@Override
+	public void setId(long id) {
+		this.id = id;
+		
+	}
     
 
 }

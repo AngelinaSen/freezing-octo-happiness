@@ -16,12 +16,12 @@ import ru.mrgrechkinn.java.foh.model.Entity;
 
 public class ArticleDAOImpl implements ArticleDAO {
 
-    // Мы решили, что каждая статья будет сохраняться в отдельном файле
-	public static final String fileName = "C:\\123.txt";
+    
+	public static final String fileName = "C:\\"; 
 	private File file;
 
-	public ArticleDAOImpl() {
-		file = new File(fileName);
+	public ArticleDAOImpl(Article article) {
+		file = new File(fileName + article.getId() + ".txt");
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -32,18 +32,17 @@ public class ArticleDAOImpl implements ArticleDAO {
 		}
 	}
 
-	@Override
-	public boolean save(Entity entity) {
+	public boolean save(Article article) {
 
 		try {
 			FileWriter writer = new FileWriter(file, true);
 
-			writer.write("Id - " + String.valueOf(Article.getId()) + "\n");
+			writer.write("Id - " + String.valueOf(article.getId()) + "\n");
 			writer.write("" + "\n");
-			writer.write(Article.getContent() + "\n");
+			writer.write(article.getContent() + "\n");
 			writer.write("" + "\n");
 			writer.write("" + "\n");
-			writer.write(Article.getSubject() + "\n");
+			writer.write(article.getSubject() + "\n");
 
 			writer.close();
 
@@ -59,7 +58,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 
 	@Override
-	public boolean delete(Entity userEntity) {
+	public boolean delete(Article article) {
 
 		try {
 
@@ -88,7 +87,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 			}
 
 			for (int i = 6; i < list.size();) {
-				if (!Article.getId().equals(list.get(i))) {
+				if (!article.getContent().equals(list.get(i))) {
 					//listTwo.add(list.get(i - 1));
 					listTwo.add(list.get(i));
 					//listTwo.add(list.get(i + 1));
@@ -117,28 +116,33 @@ public class ArticleDAOImpl implements ArticleDAO {
 		return false;
 	}
 
-	// TODO: WTF??? Не надо выводить на консоль, а возвращать статью как объект, чтобы можно было использовать
+	
 	@Override
 	public Entity getArticleById(long id) {
 
+				
 		try {
 
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 
 			List<String> list = new ArrayList<String>();
 
+			Object[] arr = new Object[list.size()];
+			
 			while (reader.readLine() != null) {
 				String line;
 				if ((line = reader.readLine()) != null) {
 					list.add(line);
 				}
 			}
-
+			
+				
 			for (int i = 1; i < list.size();) {
 				if (Long.parseLong(list.get(i - 1)) == id) {
-					System.out.println(list.get(i));
+					//System.out.println(list.get(i));
+					arr[i] = list.get(i);
 				} else {
-					System.out.print("");
+					//System.out.print("");
 				}
 				i ++;
 			}
@@ -152,7 +156,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		return null;
 	}
 
-	// TODO: WTF??? Не надо выводить всё на консоль, а возвращать массив статей, чтобы можно было их использовать
+	
 	@Override
 	public List<Entity> getAllArticles() {
 
@@ -160,15 +164,17 @@ public class ArticleDAOImpl implements ArticleDAO {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 
 			List<String> list = new ArrayList<String>();
-
+			Object[] arr = new Object[1];
 			try {
 				while (reader.readLine() != null) {
 					list.add(reader.readLine());
 				}
+				arr[0] = list;
 
-				for (String s : list) {
-					System.out.println(s);
-				}
+				//for (String s : list) {
+					//System.out.println(s);
+					
+				//}
 				reader.close();
 			} catch (IOException e) {
 				
@@ -181,6 +187,18 @@ public class ArticleDAOImpl implements ArticleDAO {
 		}
 
 		return null;
+	}
+
+	@Override
+	public boolean save(Entity entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean delete(Entity userEntity) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
