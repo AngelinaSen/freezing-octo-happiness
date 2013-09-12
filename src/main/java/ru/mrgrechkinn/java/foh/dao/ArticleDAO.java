@@ -2,15 +2,13 @@ package ru.mrgrechkinn.java.foh.dao;
 
 import java.util.List;
 
-import ru.mrgrechkinn.java.foh.model.Entity;
-import ru.mrgrechkinn.java.foh.model.User;
+import ru.mrgrechkinn.java.foh.model.Article;
 
 
-public interface ArticleDAO extends AbstractDAO<Entity> {
+public interface ArticleDAO extends AbstractDAO<Article> {
 
-    Entity getArticleById(long id);
+    Article getArticleById(long id);
 
-    List<Entity> getAllArticles();
+    List<Article> getAllArticles();
 
-    
 }

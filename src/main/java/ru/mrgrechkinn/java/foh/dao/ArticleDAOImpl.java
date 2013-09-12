@@ -6,17 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import ru.mrgrechkinn.java.foh.model.Article;
-import ru.mrgrechkinn.java.foh.model.Entity;
 
 public class ArticleDAOImpl implements ArticleDAO {
 
-    
 	public static final String fileName = "C:\\"; 
 	private File file;
 
@@ -118,7 +114,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	
 	@Override
-	public Entity getArticleById(long id) {
+	public Article getArticleById(long id) {
 
 				
 		try {
@@ -158,7 +154,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	
 	@Override
-	public List<Entity> getAllArticles() {
+	public List<Article> getAllArticles() {
 
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -189,16 +185,5 @@ public class ArticleDAOImpl implements ArticleDAO {
 		return null;
 	}
 
-	@Override
-	public boolean save(Entity entity) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean delete(Entity userEntity) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }
