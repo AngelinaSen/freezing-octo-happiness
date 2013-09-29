@@ -14,34 +14,38 @@ import java.util.List;
 import ru.mrgrechkinn.java.foh.dao.UserDAOImpl;
 import ru.mrgrechkinn.java.foh.model.User;
 import ru.mrgrechkinn.java.foh.util.IOUtils;
+import ru.mrgrechkinn.java.foh.view.RegisterView;
 import ru.mrgrechkinn.java.foh.view.UserView;
 
 
 public class UserController implements ActionListener {
     
-    UserView parent;
+    public UserView parentView;
+    private RegisterView parentRegister;
     
-    public UserController(UserView parent) {
-        this.parent = parent;
+    public UserController(UserView parentView) {
+        this.parentView = parentView;
     }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        if (e.getSource() == parent.buttonRegister) {
+        if (e.getSource() == parentView.buttonRegister) {
             onRegister(e);
         }
-        if (e.getSource() == parent.buttonLogin) {
+        if (e.getSource() == parentView.buttonLogin) {
             onLogin(e);
         }
     }
     private void onRegister(ActionEvent e) {
         
-        parent.labelNotification.setText("this button don't work...");
+        parentRegister = new RegisterView();
+        
     }
     private void onLogin(ActionEvent e) {
         
-        String displayFieldTextLogin = parent.fieldLogin.getText();
-        char[] displayFieldTextPassword = parent.fieldPassword.getPassword(); 
+        String displayFieldTextLogin = parentView.fieldLogin.getText();
+        char[] displayFieldTextPassword = parentView.fieldPassword.getPassword(); 
         
         File file = new File(UserDAOImpl.fileName);
         List<User> users = new ArrayList<User>();
@@ -60,11 +64,11 @@ public class UserController implements ActionListener {
             
             for (User u: users) {
                 if (displayFieldTextLogin.equals(u.getLogin()) && u.getPassword().equals(new String(displayFieldTextPassword))) {
-                    parent.labelNotification.setText(u.getLogin() + " logged");
+                    parentView.labelNotification.setText(u.getLogin() + " logged");
                     break;
                 }
                 else {
-                    parent.labelNotification.setText("user name or login is incorrect");
+                    parentView.labelNotification.setText("user name or login is incorrect");
                 }
             }
             Arrays.fill(displayFieldTextPassword, (char) 0);

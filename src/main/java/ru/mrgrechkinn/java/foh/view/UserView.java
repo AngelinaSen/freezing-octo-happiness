@@ -44,7 +44,6 @@ public class UserView extends JFrame {
         
         JLabel labelPassword = new JLabel("Password: ");
         fieldPassword = new JPasswordField(10);
-        fieldPassword.setEchoChar(' ');
         p2.add(labelPassword);
         p2.add(fieldPassword);
         
@@ -72,10 +71,10 @@ public class UserView extends JFrame {
         myWindow.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         myWindow.setVisible(true);
         
-        UserController usercontroller = new UserController(this);
+        UserController userController = new UserController(this);
         
-        buttonRegister.addActionListener(usercontroller);
-        buttonLogin.addActionListener(usercontroller);
+        buttonRegister.addActionListener(userController);
+        buttonLogin.addActionListener(userController);
         
     }
     
