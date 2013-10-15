@@ -44,7 +44,16 @@ public class UserController implements ActionListener {
     }
     private void onLogin(ActionEvent e) {
         
-        String displayFieldTextLogin = parentView.fieldLogin.getText();
+        /**
+         * Этот код не правильный, контроллер не должен знать как и откуда доставать пользователей
+         * надо использовать сервисы, но пока их нету, надо использовать UserDAO
+         * 
+         * Переписать весь код
+         */
+        
+        
+        
+        /*String displayFieldTextLogin = parentView.fieldLogin.getText();
         char[] displayFieldTextPassword = parentView.fieldPassword.getPassword(); 
         
         File file = new File(UserDAOImpl.fileName);
@@ -79,7 +88,7 @@ public class UserController implements ActionListener {
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
-        }
+        }*/
     }
 
 }

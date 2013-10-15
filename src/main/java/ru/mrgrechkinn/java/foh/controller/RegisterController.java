@@ -37,8 +37,12 @@ public class RegisterController implements ActionListener {
     }
     
     private void onRegister(ActionEvent e) {
+        /**
+         * Использовать только сервисы или дао, никаких чтений/записи в файл не должно быть, абстракция
+         * использую готовый UserDAO
+         */
         
-        String displayFieldTextLogin = parentRegisterView.textFieldLogin.getText();
+        /*String displayFieldTextLogin = parentRegisterView.textFieldLogin.getText();
         char[] displayFieldTextPassword = parentRegisterView.passwordField.getPassword();
         
         File file = new File(UserDAOImpl.fileName);
@@ -78,7 +82,7 @@ public class RegisterController implements ActionListener {
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
-        }
+        }*/
         
     }
     

@@ -15,7 +15,7 @@ import ru.mrgrechkinn.java.foh.controller.RegisterController;
 import ru.mrgrechkinn.java.foh.controller.UserController;
 
 
-public class RegisterView extends JFrame {
+public class RegisterView extends JFrame implements View{
     
     private JPanel windowContent;
     public JLabel labelNotification;
