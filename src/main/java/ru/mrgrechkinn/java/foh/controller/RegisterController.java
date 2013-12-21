@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.mrgrechkinn.java.foh.dao.UserDAO;
-import ru.mrgrechkinn.java.foh.dao.UserDAOImpl;
+import ru.mrgrechkinn.java.foh.dao.UserDAOSql;
 import ru.mrgrechkinn.java.foh.model.User;
 import ru.mrgrechkinn.java.foh.view.RegisterView;
 
@@ -26,37 +26,53 @@ public class RegisterController implements ActionListener {
             onRegister(e);
         }
         if (e.getSource() == parentRegisterView.buttonExit) {
-        	parentRegisterView.windowRegister.setVisible(false);
-            parentRegisterView.windowRegister.dispose();
+        	parentRegisterView.setVisible(false);
+            parentRegisterView.dispose();
         }
     }
     
     private void onRegister(ActionEvent e) {
-    	
-        String displayFieldTextLogin = parentRegisterView.textFieldLogin.getText();
-        char[] displayFieldTextPassword = parentRegisterView.passwordField.getPassword();
         
-        UserDAO user = new UserDAOImpl();
+        String displayFieldLogin = parentRegisterView.fieldLogin.getText();
+        char[] displayFieldPass = parentRegisterView.fieldPassword.getPassword();
+        String displayFieldFullName = parentRegisterView.fieldFullName.getText();
+        
+        UserDAO userdao = new UserDAOSql();
         User newUser = new User();
         
         List<User> users = new ArrayList<User>();
-        users.addAll(user.getAllUsers());
-        
-        for (User u: users) {
-        	if ("".equals(displayFieldTextLogin) || "".equals(new String(displayFieldTextPassword)) || "".equals(parentRegisterView.textFieldFullName.getText())) {
-        		parentRegisterView.labelNotification.setText("input all fields");
-        		break;
-        	}
-        	if (displayFieldTextLogin.equals(u.getLogin())) {
-        		parentRegisterView.labelNotification.setText("incorrect input user, user exist");
-        	}
-        	else {
-        		newUser.setLogin(displayFieldTextLogin);
-        		newUser.setPassword(new String(displayFieldTextPassword));
-        		newUser.setFullName(parentRegisterView.textFieldFullName.getText());
-        		user.save(newUser);
-        		parentRegisterView.windowRegister.setVisible(false);
-        	}
+        users.addAll(userdao.getAllUsers());
+        if (!users.isEmpty()) {
+            for (User u: users) {
+                if ("".equals(displayFieldLogin) || "".equals(new String(displayFieldPass)) || "".equals(displayFieldFullName)) {
+                    parentRegisterView.labelNotification.setText("input all fields");
+                    break;
+                }
+                if (displayFieldLogin.equals(u.getLogin())) {
+                    parentRegisterView.labelNotification.setText("incorrect input user, user exist");
+                    break;
+                }
+                else {
+                    newUser.setLogin(displayFieldLogin);
+                    newUser.setPassword(new String(displayFieldPass));
+                    newUser.setFullName(displayFieldFullName);
+                    userdao.save(newUser);
+                    parentRegisterView.setVisible(false);
+                    break;
+                }
+            }
+        }
+        else {
+            if ("".equals(displayFieldLogin) || "".equals(new String(displayFieldPass)) || "".equals(displayFieldFullName)) {
+                parentRegisterView.labelNotification.setText("input all fields");
+            }
+            else {
+                newUser.setLogin(displayFieldLogin);
+                newUser.setPassword(new String(displayFieldPass));
+                newUser.setFullName(displayFieldFullName);
+                userdao.save(newUser);
+                parentRegisterView.setVisible(false);
+            }
         }
         
     }
