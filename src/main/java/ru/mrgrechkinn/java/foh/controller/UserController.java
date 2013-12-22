@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import ru.mrgrechkinn.java.foh.dao.UserDAO;
 import ru.mrgrechkinn.java.foh.dao.UserDAOSql;
 import ru.mrgrechkinn.java.foh.model.User;
@@ -16,6 +18,8 @@ import ru.mrgrechkinn.java.foh.view.UserView;
 public class UserController implements ActionListener {
     
     public UserView parentView;
+    
+    private static final Logger LOG = Logger.getLogger(UserController.class);
     
     public UserController(UserView parentView) {
         this.parentView = parentView;
@@ -44,15 +48,18 @@ public class UserController implements ActionListener {
         users.addAll(user.getAllUsers());
         
         if (users.isEmpty()) {
+            LOG.debug("no registered users");
             parentView.labelNotification.setText("user name or login is incorrect");
         }
         else {
             for (User u: users) {
                 if (u.getLogin().equals(displayFieldLogin) && u.getPassword().equals(new String(displayFieldPassword))) {
+                    LOG.debug(u.getLogin() + " logged");
                     parentView.labelNotification.setText(u.getLogin() + " logged");
                     break;
                 }
                 else {
+                    LOG.debug("user name or login is incorrect");
                     parentView.labelNotification.setText("user name or login is incorrect");
                 }
             }

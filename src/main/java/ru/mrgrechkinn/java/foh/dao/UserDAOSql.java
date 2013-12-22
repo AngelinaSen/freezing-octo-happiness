@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.log4j.Logger;
 
 import ru.mrgrechkinn.java.foh.model.User;
 
 public class UserDAOSql implements UserDAO {
 
+    private static final Logger LOG = Logger.getLogger(UserDAOSql.class);
+    
     private static final String USER = "sa";
     private static final String PASSWORD = "";
     private static final String URL = "jdbc:h2:~/test";
@@ -25,7 +28,7 @@ public class UserDAOSql implements UserDAO {
             Class.forName(DRIVER);
             init();
         } catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+            LOG.fatal(e);
         }
     }
     
@@ -42,7 +45,7 @@ public class UserDAOSql implements UserDAO {
             statement.executeUpdate();
             return true;
         } catch(SQLException e) {
-            System.out.println(e.getMessage());
+            LOG.error(e);
         } finally {
             DbUtils.closeQuietly(statement);
             DbUtils.closeQuietly(connection);
@@ -69,6 +72,7 @@ public class UserDAOSql implements UserDAO {
                 return user;
             }
         } catch (SQLException e) {
+            LOG.error(e);
         } finally {
             DbUtils.closeQuietly(statement);
             DbUtils.closeQuietly(connection);
@@ -87,7 +91,7 @@ public class UserDAOSql implements UserDAO {
             statement.setString(1, newUser.getLogin());
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            LOG.error(e);
         } finally {
             DbUtils.closeQuietly(statement);
             DbUtils.closeQuietly(connection);
@@ -114,6 +118,7 @@ public class UserDAOSql implements UserDAO {
                 users.add(newUser);
             }
         } catch (SQLException e) {
+            LOG.error(e);
         } finally {
             DbUtils.closeQuietly(statement);
             DbUtils.closeQuietly(connection);
@@ -134,7 +139,7 @@ public class UserDAOSql implements UserDAO {
                     + " FULL_NAME VARCHAR(255))");
             
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            LOG.error(e);
         } finally {
             DbUtils.closeQuietly(statement);
             DbUtils.closeQuietly(connection);

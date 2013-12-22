@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import ru.mrgrechkinn.java.foh.model.User;
 import ru.mrgrechkinn.java.foh.util.IOUtils;
 
@@ -16,6 +18,8 @@ public class UserDAOImpl implements UserDAO {
 
     public static final String fileName = "test.txt";
     private File file;
+    
+    private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
     public UserDAOImpl(){
         file = new File(fileName);
@@ -23,8 +27,7 @@ public class UserDAOImpl implements UserDAO {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LOG.fatal(e);
             }
         }
     }
@@ -77,11 +80,9 @@ public class UserDAOImpl implements UserDAO {
             IOUtils.closeQuietly(writer);
             return true;
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error(e);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error(e);
         }
         return false;
     }
@@ -107,8 +108,7 @@ public class UserDAOImpl implements UserDAO {
                 }
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error(e);
         }
         return null;
     }
@@ -155,13 +155,11 @@ public class UserDAOImpl implements UserDAO {
                 IOUtils.closeQuietly(writer);
                 return true;
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LOG.error(e);
             }
             
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error(e);
         }
         
         return false;
@@ -188,13 +186,11 @@ public class UserDAOImpl implements UserDAO {
                 }
                 IOUtils.closeQuietly(reader);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LOG.error(e);
             }
             
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error(e);
         }
         return listUser;
     }

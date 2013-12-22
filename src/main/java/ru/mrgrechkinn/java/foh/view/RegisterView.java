@@ -22,7 +22,6 @@ public class RegisterView extends JFrame implements View{
     public JTextField fieldFullName;
     public JButton buttonRegister;
     public JButton buttonExit;
-//    public JFrame windowRegister;
     
     public RegisterView() {
         
@@ -50,7 +49,7 @@ public class RegisterView extends JFrame implements View{
         JPanel panelNotificatopn = new JPanel();
         panelNotificatopn.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
         panelNotificatopn.setPreferredSize(new Dimension(250, 50));
-        labelNotification = new JLabel("1111111111111");
+        labelNotification = new JLabel("");
         panelNotificatopn.add(labelNotification);
 
         JPanel buttonsPanel = new JPanel();

@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import ru.mrgrechkinn.java.foh.dao.UserDAO;
 import ru.mrgrechkinn.java.foh.dao.UserDAOSql;
 import ru.mrgrechkinn.java.foh.model.User;
@@ -13,7 +15,9 @@ import ru.mrgrechkinn.java.foh.view.RegisterView;
 
 public class RegisterController implements ActionListener {
 
-    RegisterView parentRegisterView;
+    public RegisterView parentRegisterView;
+    
+    private static final Logger LOG = Logger.getLogger(RegisterController.class);
     
     public RegisterController(RegisterView parentRegisterView) {
         this.parentRegisterView = parentRegisterView;
@@ -45,10 +49,12 @@ public class RegisterController implements ActionListener {
         if (!users.isEmpty()) {
             for (User u: users) {
                 if ("".equals(displayFieldLogin) || "".equals(new String(displayFieldPass)) || "".equals(displayFieldFullName)) {
+                    LOG.debug("input all fields");
                     parentRegisterView.labelNotification.setText("input all fields");
                     break;
                 }
                 if (displayFieldLogin.equals(u.getLogin())) {
+                    LOG.debug("incorrect input user, user exist");
                     parentRegisterView.labelNotification.setText("incorrect input user, user exist");
                     break;
                 }
@@ -57,6 +63,7 @@ public class RegisterController implements ActionListener {
                     newUser.setPassword(new String(displayFieldPass));
                     newUser.setFullName(displayFieldFullName);
                     userdao.save(newUser);
+                    LOG.debug(displayFieldLogin + "registered");
                     parentRegisterView.setVisible(false);
                     break;
                 }
@@ -64,6 +71,7 @@ public class RegisterController implements ActionListener {
         }
         else {
             if ("".equals(displayFieldLogin) || "".equals(new String(displayFieldPass)) || "".equals(displayFieldFullName)) {
+                LOG.debug("input all fields");
                 parentRegisterView.labelNotification.setText("input all fields");
             }
             else {
@@ -71,6 +79,7 @@ public class RegisterController implements ActionListener {
                 newUser.setPassword(new String(displayFieldPass));
                 newUser.setFullName(displayFieldFullName);
                 userdao.save(newUser);
+                LOG.debug(displayFieldLogin + "registered");
                 parentRegisterView.setVisible(false);
             }
         }
