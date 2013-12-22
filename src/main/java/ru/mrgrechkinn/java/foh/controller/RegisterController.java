@@ -49,12 +49,12 @@ public class RegisterController implements ActionListener {
         if (!users.isEmpty()) {
             for (User u: users) {
                 if ("".equals(displayFieldLogin) || "".equals(new String(displayFieldPass)) || "".equals(displayFieldFullName)) {
-                    LOG.debug("input all fields");
+                    LOG.info("input all fields");
                     parentRegisterView.labelNotification.setText("input all fields");
                     break;
                 }
                 if (displayFieldLogin.equals(u.getLogin())) {
-                    LOG.debug("incorrect input user, user exist");
+                    LOG.info("incorrect input user, user exist");
                     parentRegisterView.labelNotification.setText("incorrect input user, user exist");
                     break;
                 }
@@ -63,7 +63,7 @@ public class RegisterController implements ActionListener {
                     newUser.setPassword(new String(displayFieldPass));
                     newUser.setFullName(displayFieldFullName);
                     userdao.save(newUser);
-                    LOG.debug(displayFieldLogin + "registered");
+                    LOG.info(displayFieldLogin + "registered");
                     parentRegisterView.setVisible(false);
                     break;
                 }
@@ -71,7 +71,7 @@ public class RegisterController implements ActionListener {
         }
         else {
             if ("".equals(displayFieldLogin) || "".equals(new String(displayFieldPass)) || "".equals(displayFieldFullName)) {
-                LOG.debug("input all fields");
+                LOG.info("input all fields");
                 parentRegisterView.labelNotification.setText("input all fields");
             }
             else {
@@ -79,7 +79,7 @@ public class RegisterController implements ActionListener {
                 newUser.setPassword(new String(displayFieldPass));
                 newUser.setFullName(displayFieldFullName);
                 userdao.save(newUser);
-                LOG.debug(displayFieldLogin + "registered");
+                LOG.info(displayFieldLogin + "registered");
                 parentRegisterView.setVisible(false);
             }
         }

@@ -48,18 +48,18 @@ public class UserController implements ActionListener {
         users.addAll(user.getAllUsers());
         
         if (users.isEmpty()) {
-            LOG.debug("no registered users");
+            LOG.info("no registered users");
             parentView.labelNotification.setText("user name or login is incorrect");
         }
         else {
             for (User u: users) {
                 if (u.getLogin().equals(displayFieldLogin) && u.getPassword().equals(new String(displayFieldPassword))) {
-                    LOG.debug(u.getLogin() + " logged");
+                    LOG.info(u.getLogin() + " logged");
                     parentView.labelNotification.setText(u.getLogin() + " logged");
                     break;
                 }
                 else {
-                    LOG.debug("user name or login is incorrect");
+                    LOG.info("user name or login is incorrect");
                     parentView.labelNotification.setText("user name or login is incorrect");
                 }
             }
