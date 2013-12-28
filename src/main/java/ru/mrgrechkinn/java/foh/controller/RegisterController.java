@@ -11,6 +11,7 @@ import ru.mrgrechkinn.java.foh.dao.UserDAO;
 import ru.mrgrechkinn.java.foh.dao.UserDAOSql;
 import ru.mrgrechkinn.java.foh.model.User;
 import ru.mrgrechkinn.java.foh.view.RegisterView;
+import ru.mrgrechkinn.java.foh.view.UserView;
 
 
 public class RegisterController implements ActionListener {
@@ -29,9 +30,10 @@ public class RegisterController implements ActionListener {
         if (e.getSource() == parentRegisterView.buttonRegister) {
             onRegister(e);
         }
-        if (e.getSource() == parentRegisterView.buttonExit) {
+        if (e.getSource() == parentRegisterView.buttonCancel) {
         	parentRegisterView.setVisible(false);
             parentRegisterView.dispose();
+            new UserView();
         }
     }
     
@@ -65,6 +67,8 @@ public class RegisterController implements ActionListener {
                     userdao.save(newUser);
                     LOG.info(displayFieldLogin + "registered");
                     parentRegisterView.setVisible(false);
+                    parentRegisterView.dispose();
+                    new UserView();
                     break;
                 }
             }

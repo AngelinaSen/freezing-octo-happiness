@@ -13,6 +13,7 @@ import ru.mrgrechkinn.java.foh.dao.UserDAOSql;
 import ru.mrgrechkinn.java.foh.model.User;
 import ru.mrgrechkinn.java.foh.view.RegisterView;
 import ru.mrgrechkinn.java.foh.view.UserView;
+import ru.mrgrechkinn.java.foh.view.WorkplaceView;
 
 
 public class UserController implements ActionListener {
@@ -55,7 +56,10 @@ public class UserController implements ActionListener {
             for (User u: users) {
                 if (u.getLogin().equals(displayFieldLogin) && u.getPassword().equals(new String(displayFieldPassword))) {
                     LOG.info(u.getLogin() + " logged");
-                    parentView.labelNotification.setText(u.getLogin() + " logged");
+//                    parentView.labelNotification.setText(u.getLogin() + " logged");
+                    WorkplaceController.login = u.getLogin();
+                    parentView.setVisible(false);
+                    new WorkplaceView();
                     break;
                 }
                 else {

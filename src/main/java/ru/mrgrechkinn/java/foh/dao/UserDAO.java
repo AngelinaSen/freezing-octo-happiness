@@ -12,8 +12,6 @@ public interface UserDAO {
 
     boolean save(User userEntity);
 
-    User getUserById(long id);
-
     boolean delete(User userEntity);
 
     List<User> getAllUsers();

@@ -38,7 +38,7 @@ public class UserDAOSql implements UserDAO {
         PreparedStatement statement = null;
         try {
             connection = getConnection();
-            statement = connection.prepareStatement("insert into user values (default, ?, ?, ?)");
+            statement = connection.prepareStatement("insert into user values (?, ?, ?)");
             statement.setString(1, newUser.getLogin());
             statement.setString(2, newUser.getPassword());
             statement.setString(3, newUser.getFullName());
@@ -51,34 +51,6 @@ public class UserDAOSql implements UserDAO {
             DbUtils.closeQuietly(connection);
         }
         return false;
-    }
-
-    @Override
-    public User getUserById(long id) {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = getConnection();
-            statement = connection.prepareStatement("select * from user where id = ?");
-            statement.setLong(1, id);
-            resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                User user = new User();
-                user.setId(resultSet.getLong("id"));
-                user.setLogin(resultSet.getString("login"));
-                user.setPassword(resultSet.getString("pass"));
-                user.setFullName(resultSet.getString("full_name"));
-                return user;
-            }
-        } catch (SQLException e) {
-            LOG.error(e);
-        } finally {
-            DbUtils.closeQuietly(statement);
-            DbUtils.closeQuietly(connection);
-        }
-        
-        return null;
     }
 
     @Override
@@ -111,7 +83,6 @@ public class UserDAOSql implements UserDAO {
             resultSet = statement.executeQuery("select * from user");
             while(resultSet.next()) {
                 User newUser = new User();
-                newUser.setId(resultSet.getLong("id"));
                 newUser.setLogin(resultSet.getString("login"));
                 newUser.setPassword(resultSet.getString("pass"));
                 newUser.setFullName(resultSet.getString("full_name"));
@@ -126,6 +97,33 @@ public class UserDAOSql implements UserDAO {
         return users;
     }
     
+    public User findUserByLogin(String login) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement("select * into user where login = ?");
+            statement.setString(1, login);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                User newUser = new User();
+                newUser.setLogin(resultSet.getString("login"));
+                newUser.setPassword(resultSet.getString("password"));
+                newUser.setFullName(resultSet.getString("full_name"));
+                return newUser;
+            }
+        } catch (SQLException e) {
+            LOG.error(e);
+        } finally {
+            DbUtils.closeQuietly(resultSet);
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(connection);
+        }
+        
+        return null;
+    }
+    
     private void init() {
         Connection connection = null;
         Statement statement = null;
@@ -133,8 +131,7 @@ public class UserDAOSql implements UserDAO {
             connection = getConnection();
             statement = connection.createStatement();
             statement.execute("CREATE TABLE IF NOT EXISTS USER ("
-                    + " ID INT PRIMARY KEY AUTO_INCREMENT,"
-                    + " LOGIN VARCHAR(255) NOT NULL,"
+                    + " LOGIN VARCHAR(255) PRIMARY KEY NOT NULL,"
                     + " PASS VARCHAR(255)," 
                     + " FULL_NAME VARCHAR(255))");
             

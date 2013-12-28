@@ -21,7 +21,7 @@ public class RegisterView extends JFrame implements View{
     public JPasswordField fieldPassword;
     public JTextField fieldFullName;
     public JButton buttonRegister;
-    public JButton buttonExit;
+    public JButton buttonCancel;
     
     public RegisterView() {
         
@@ -56,9 +56,9 @@ public class RegisterView extends JFrame implements View{
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
 
         buttonRegister = new JButton("Register");
-        buttonExit = new JButton("Exit");
+        buttonCancel = new JButton("Cancel");
         buttonsPanel.add(buttonRegister);
-        buttonsPanel.add(buttonExit);
+        buttonsPanel.add(buttonCancel);
 
         add(detailsPanel);
         add(panelNotificatopn);
@@ -67,7 +67,7 @@ public class RegisterView extends JFrame implements View{
         RegisterController registerController = new RegisterController(this);
         
         buttonRegister.addActionListener(registerController);
-        buttonExit.addActionListener(registerController);
+        buttonCancel.addActionListener(registerController);
         
         pack();
         setLocationRelativeTo(null);

@@ -5,7 +5,6 @@ public class User implements Entity {
     private String login;
     private String password;
     private String fullName;
-    private long id;
     
     public String getLogin() {
         return login;
@@ -31,13 +30,5 @@ public class User implements Entity {
         this.fullName = fullName;
     }
     
-    @Override
-    public long getId() {
-        return id;
-    }
-    @Override
-    public void setId(long id) {
-        this.id = id;
-    }
 
 }
