@@ -15,5 +15,7 @@ public interface UserDAO {
     boolean delete(User userEntity);
 
     List<User> getAllUsers();
+    
+    User findUserByLogin(String login);
 
 }

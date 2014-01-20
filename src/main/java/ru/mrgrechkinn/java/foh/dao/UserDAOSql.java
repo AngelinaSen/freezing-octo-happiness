@@ -97,6 +97,7 @@ public class UserDAOSql implements UserDAO {
         return users;
     }
     
+    @Override
     public User findUserByLogin(String login) {
         Connection connection = null;
         PreparedStatement statement = null;
