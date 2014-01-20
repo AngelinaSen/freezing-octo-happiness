@@ -43,32 +43,27 @@ public class UserController implements ActionListener {
         String displayFieldLogin = parentView.fieldLogin.getText();
         char[] displayFieldPassword = parentView.fieldPassword.getPassword();
         
-        UserDAO user = new UserDAOSql();
-        List<User> users = new ArrayList<User>();
+        User user = new User();
+        UserDAO userDao = new UserDAOSql();
         
-        users.addAll(user.getAllUsers());
+        user = userDao.findUserByLogin(displayFieldLogin);
         
-        if (users.isEmpty()) {
-            LOG.info("no registered users");
+        if (displayFieldLogin.isEmpty()) {
+            LOG.info("no registered user");
             parentView.labelNotification.setText("user name or login is incorrect");
         }
         else {
-            for (User u: users) {
-                if (u.getLogin().equals(displayFieldLogin) && u.getPassword().equals(new String(displayFieldPassword))) {
-                    LOG.info(u.getLogin() + " logged");
-//                    parentView.labelNotification.setText(u.getLogin() + " logged");
-                    WorkplaceController.login = u.getLogin();
-                    parentView.setVisible(false);
-                    new WorkplaceView();
-                    break;
-                }
-                else {
-                    LOG.info("user name or login is incorrect");
-                    parentView.labelNotification.setText("user name or login is incorrect");
-                }
+            if (user.getLogin().equals(displayFieldLogin) && user.getPassword().equals(new String(displayFieldPassword))) {
+                LOG.info(user.getLogin() + " logged");
+                WorkplaceController.login = user.getLogin();
+                parentView.setVisible(false);
+                new WorkplaceView();
+            }
+            else {
+                LOG.info("user name or login is incorrect");
+                parentView.labelNotification.setText("user name or login is incorrect");
             }
         }
-        
         Arrays.fill(displayFieldPassword, (char) 0);
         
     }

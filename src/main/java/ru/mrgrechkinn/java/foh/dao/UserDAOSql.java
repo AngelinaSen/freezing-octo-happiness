@@ -104,13 +104,13 @@ public class UserDAOSql implements UserDAO {
         ResultSet resultSet = null;
         try {
             connection = getConnection();
-            statement = connection.prepareStatement("select * into user where login = ?");
+            statement = connection.prepareStatement("select * from user where login = ?");
             statement.setString(1, login);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 User newUser = new User();
                 newUser.setLogin(resultSet.getString("login"));
-                newUser.setPassword(resultSet.getString("password"));
+                newUser.setPassword(resultSet.getString("pass"));
                 newUser.setFullName(resultSet.getString("full_name"));
                 return newUser;
             }
