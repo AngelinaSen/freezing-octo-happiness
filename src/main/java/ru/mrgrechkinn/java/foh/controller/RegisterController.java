@@ -2,8 +2,7 @@ package ru.mrgrechkinn.java.foh.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 
@@ -40,54 +39,30 @@ public class RegisterController implements ActionListener {
     private void onRegister(ActionEvent e) {
         
         String displayFieldLogin = parentRegisterView.fieldLogin.getText();
-        char[] displayFieldPass = parentRegisterView.fieldPassword.getPassword();
+        char[] displayFieldPassword = parentRegisterView.fieldPassword.getPassword();
         String displayFieldFullName = parentRegisterView.fieldFullName.getText();
         
-        UserDAO userdao = new UserDAOSql();
-        User newUser = new User();
-        
-        List<User> users = new ArrayList<User>();
-        users.addAll(userdao.getAllUsers());
-        if (!users.isEmpty()) {
-            for (User u: users) {
-                if ("".equals(displayFieldLogin) || "".equals(new String(displayFieldPass)) || "".equals(displayFieldFullName)) {
-                    LOG.info("input all fields");
-                    parentRegisterView.labelNotification.setText("input all fields");
-                    break;
-                }
-                if (displayFieldLogin.equals(u.getLogin())) {
-                    LOG.info("incorrect input user, user exist");
-                    parentRegisterView.labelNotification.setText("incorrect input user, user exist");
-                    break;
-                }
-                else {
-                    newUser.setLogin(displayFieldLogin);
-                    newUser.setPassword(new String(displayFieldPass));
-                    newUser.setFullName(displayFieldFullName);
-                    userdao.save(newUser);
-                    LOG.info(displayFieldLogin + "registered");
-                    parentRegisterView.setVisible(false);
-                    parentRegisterView.dispose();
-                    new UserView();
-                    break;
-                }
-            }
-        }
-        else {
-            if ("".equals(displayFieldLogin) || "".equals(new String(displayFieldPass)) || "".equals(displayFieldFullName)) {
-                LOG.info("input all fields");
-                parentRegisterView.labelNotification.setText("input all fields");
-            }
-            else {
+        if (displayFieldLogin.isEmpty() || (new String(displayFieldPassword)).isEmpty() || displayFieldFullName.isEmpty()) {
+            LOG.info("input all field");
+            parentRegisterView.labelNotification.setText("input all field");
+        } else {
+            UserDAO userdao = new UserDAOSql();
+            if (userdao.findUserByLogin(displayFieldLogin) != null) {
+                LOG.info("incorrect input user, user exist");
+                parentRegisterView.labelNotification.setText("incorrect input user, user exist");
+            } else {
+                User newUser = new User();
                 newUser.setLogin(displayFieldLogin);
-                newUser.setPassword(new String(displayFieldPass));
+                newUser.setPassword(new String(displayFieldPassword));
                 newUser.setFullName(displayFieldFullName);
                 userdao.save(newUser);
-                LOG.info(displayFieldLogin + "registered");
+                LOG.info(displayFieldLogin + " registered");
                 parentRegisterView.setVisible(false);
+                parentRegisterView.dispose();
+                new UserView();
             }
         }
-        
+        Arrays.fill(displayFieldPassword, (char) 0);
     }
     
 }
