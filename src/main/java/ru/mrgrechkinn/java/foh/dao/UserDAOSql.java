@@ -117,7 +117,6 @@ public class UserDAOSql implements UserDAO {
         } catch (SQLException e) {
             LOG.error(e);
         } finally {
-            DbUtils.closeQuietly(resultSet);
             DbUtils.closeQuietly(statement);
             DbUtils.closeQuietly(connection);
         }
