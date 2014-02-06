@@ -17,12 +17,12 @@ import ru.mrgrechkinn.java.foh.model.User;
 public class UserDAOSql implements UserDAO {
 
     private static final Logger LOG = Logger.getLogger(UserDAOSql.class);
-    
+
     private static final String USER = "sa";
     private static final String PASSWORD = "";
     private static final String URL = "jdbc:h2:~/test";
     private static final String DRIVER = "org.h2.Driver";
-    
+
     public UserDAOSql() {
         try {
             Class.forName(DRIVER);
@@ -31,7 +31,10 @@ public class UserDAOSql implements UserDAO {
             LOG.fatal(e);
         }
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean save(User newUser) {
         Connection connection = null;
@@ -53,6 +56,9 @@ public class UserDAOSql implements UserDAO {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean delete(User newUser) {
         Connection connection = null;
@@ -71,6 +77,9 @@ public class UserDAOSql implements UserDAO {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<User> getAllUsers() {
         Connection connection = null;
@@ -96,7 +105,10 @@ public class UserDAOSql implements UserDAO {
         }
         return users;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User findUserByLogin(String login) {
         Connection connection = null;
@@ -120,10 +132,9 @@ public class UserDAOSql implements UserDAO {
             DbUtils.closeQuietly(statement);
             DbUtils.closeQuietly(connection);
         }
-        
         return null;
     }
-    
+
     private void init() {
         Connection connection = null;
         Statement statement = null;
@@ -132,9 +143,8 @@ public class UserDAOSql implements UserDAO {
             statement = connection.createStatement();
             statement.execute("CREATE TABLE IF NOT EXISTS USER ("
                     + " LOGIN VARCHAR(255) PRIMARY KEY NOT NULL,"
-                    + " PASS VARCHAR(255)," 
+                    + " PASS VARCHAR(255),"
                     + " FULL_NAME VARCHAR(255))");
-            
         } catch (SQLException e) {
             LOG.error(e);
         } finally {

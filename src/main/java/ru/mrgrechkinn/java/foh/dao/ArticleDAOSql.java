@@ -17,12 +17,12 @@ import ru.mrgrechkinn.java.foh.model.Article;
 public class ArticleDAOSql implements ArticleDAO {
 
     private static final Logger LOG = Logger.getLogger(ArticleDAOSql.class);
-    
+
     private static final String DRIVER = "org.h2.Driver";
     private static final String URL = "jdbc:h2:~/test";
     private static final String USER = "sa";
     private static final String PASS = "";
-    
+
     public ArticleDAOSql() {
         try {
             Class.forName(DRIVER);
@@ -31,7 +31,10 @@ public class ArticleDAOSql implements ArticleDAO {
             LOG.error(e);
         }
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean save(Article article) {
         Connection connection = null;
@@ -49,6 +52,9 @@ public class ArticleDAOSql implements ArticleDAO {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean delete(Article article) {
         Connection connection = null;
@@ -67,6 +73,9 @@ public class ArticleDAOSql implements ArticleDAO {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Article> getAllArticle() {
         Connection connection = null;
@@ -79,7 +88,7 @@ public class ArticleDAOSql implements ArticleDAO {
             resultSet = statement.executeQuery("select * from article");
             if (resultSet.next()) {
                 Article article = new Article();
-                article.setId(resultSet.getLong("id"));  ///////??????????????????????
+                article.setId(resultSet.getLong("id"));
                 article.setSubject(resultSet.getString("subject"));
                 article.setContent(resultSet.getString("content"));
                 article.setAuthor(resultSet.getString("author"));
@@ -91,6 +100,9 @@ public class ArticleDAOSql implements ArticleDAO {
         return articles;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Article getArticleById(long id) {
         Connection connection = null;
@@ -103,7 +115,7 @@ public class ArticleDAOSql implements ArticleDAO {
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 Article article = new Article();
-                article.setId(resultSet.getLong("id")); ///////??????????????????????
+                article.setId(resultSet.getLong("id"));
                 article.setSubject(resultSet.getString("subject"));
                 article.setContent(resultSet.getString("content"));
                 article.setAuthor(resultSet.getString("author"));
@@ -112,7 +124,6 @@ public class ArticleDAOSql implements ArticleDAO {
         } catch (SQLException e) {
             LOG.error(e);
         }
-        
         return null;
     }
 
@@ -143,7 +154,7 @@ public class ArticleDAOSql implements ArticleDAO {
         }
         return articles;
     }
-    
+
     private void init() {
         Connection connection = null;
         Statement statement = null;
@@ -153,15 +164,16 @@ public class ArticleDAOSql implements ArticleDAO {
             statement.execute("CREATE TABLE IF NOT EXISTS ARTICLE ("
                     + " ID INT PRIMARY KEY AUTO_INCREMENT,"
                     + " SUBJECT VARCHAR(255),"
-                    + " CONTENT VARCHAR(255)," 
+                    + " CONTENT VARCHAR(255),"
                     + " AUTHOR VARCHAR(255),"
                     + " FOREIGN KEY (AUTHOR) REFERENCES USER (LOGIN))");
         } catch (SQLException e) {
             LOG.error(e);
         }
     }
-    
+
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
     }
+
 }

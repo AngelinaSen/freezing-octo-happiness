@@ -15,18 +15,20 @@ import ru.mrgrechkinn.java.foh.view.WorkplaceView;
 
 
 public class UserController implements ActionListener {
-    
-    public UserView parentView;
-    
+
     private static final Logger LOG = Logger.getLogger(UserController.class);
-    
+
+    public UserView parentView;
+
     public UserController(UserView parentView) {
         this.parentView = parentView;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        
         if (e.getSource() == parentView.buttonRegister) {
             new RegisterView();
             parentView.setVisible(false);
@@ -35,12 +37,11 @@ public class UserController implements ActionListener {
             onLogin(e);
         }
     }
-    
+
     private void onLogin(ActionEvent e) {
-        
         String displayFieldLogin = parentView.fieldLogin.getText();
         char[] displayFieldPassword = parentView.fieldPassword.getPassword();
-        
+
         if (displayFieldLogin.isEmpty()) {
             LOG.info("field login is empty");
             parentView.labelNotification.setText("field login is empty");
@@ -59,7 +60,6 @@ public class UserController implements ActionListener {
             }
         }
         Arrays.fill(displayFieldPassword, (char) 0);
-        
     }
 
 }

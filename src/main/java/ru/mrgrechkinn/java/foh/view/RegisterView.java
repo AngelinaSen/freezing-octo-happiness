@@ -15,22 +15,21 @@ import ru.mrgrechkinn.java.foh.controller.RegisterController;
 
 
 public class RegisterView extends JFrame implements View{
-    
+
     public JLabel labelNotification;
     public JTextField fieldLogin;
     public JPasswordField fieldPassword;
     public JTextField fieldFullName;
     public JButton buttonRegister;
     public JButton buttonCancel;
-    
+
     public RegisterView() {
-        
         super("Register window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(300, 300));
         setResizable(false);
         setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
-        
+
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new GridLayout(4, 4, 5, 10));
 
@@ -41,7 +40,7 @@ public class RegisterView extends JFrame implements View{
         fieldPassword = new JPasswordField(10);
         detailsPanel.add(new JLabel("Password:"));
         detailsPanel.add(fieldPassword);
-        
+
         fieldFullName = new JTextField(10);
         detailsPanel.add(new JLabel("Full Name:"));
         detailsPanel.add(fieldFullName);
@@ -63,12 +62,12 @@ public class RegisterView extends JFrame implements View{
         add(detailsPanel);
         add(panelNotificatopn);
         add(buttonsPanel);
-        
+
         RegisterController registerController = new RegisterController(this);
-        
+
         buttonRegister.addActionListener(registerController);
         buttonCancel.addActionListener(registerController);
-        
+
         pack();
         setLocationRelativeTo(null);
         setVisible(true);

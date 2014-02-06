@@ -6,8 +6,7 @@ public class Article implements Entity {
     private String content;
     private String subject;
     private String author;
-    
-    
+
     public String getContent() {
         return content;
     }

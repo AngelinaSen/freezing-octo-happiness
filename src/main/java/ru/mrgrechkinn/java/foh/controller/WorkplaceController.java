@@ -12,16 +12,18 @@ import ru.mrgrechkinn.java.foh.view.WorkplaceView;
 public class WorkplaceController implements ActionListener {
 
     public WorkplaceView parentWorkplaceView;
-    
+
     public static String login;
-    
+
     public WorkplaceController(WorkplaceView workplaceView) {
         parentWorkplaceView = workplaceView;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        
         if (e.getSource() == parentWorkplaceView.buttonCreateArticle) {
             onCreateArticle();
         }
@@ -35,15 +37,15 @@ public class WorkplaceController implements ActionListener {
     private void onCreateArticle() {
         String displayFieldSubject = parentWorkplaceView.fieldSubject.getText();
         String displayFieldContent = parentWorkplaceView.fieldContent.getText();
-        
+
         ArticleDAO articledao = new ArticleDAOSql();
         Article article = new Article();
-        
+
         article.setSubject(displayFieldSubject);
         article.setContent(displayFieldContent);
-        article.setAuthor(login); 
+        article.setAuthor(login);
         articledao.save(article);
-        
+
         parentWorkplaceView.fieldSubject.setText("");
         parentWorkplaceView.fieldContent.setText("");
     }

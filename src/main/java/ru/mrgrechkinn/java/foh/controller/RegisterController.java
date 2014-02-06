@@ -15,33 +15,34 @@ import ru.mrgrechkinn.java.foh.view.UserView;
 
 public class RegisterController implements ActionListener {
 
-    public RegisterView parentRegisterView;
-    
     private static final Logger LOG = Logger.getLogger(RegisterController.class);
-    
+
+    public RegisterView parentRegisterView;
+
     public RegisterController(RegisterView parentRegisterView) {
         this.parentRegisterView = parentRegisterView;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        
         if (e.getSource() == parentRegisterView.buttonRegister) {
             onRegister(e);
         }
         if (e.getSource() == parentRegisterView.buttonCancel) {
-        	parentRegisterView.setVisible(false);
+            parentRegisterView.setVisible(false);
             parentRegisterView.dispose();
             new UserView();
         }
     }
-    
+
     private void onRegister(ActionEvent e) {
-        
         String displayFieldLogin = parentRegisterView.fieldLogin.getText();
         char[] displayFieldPassword = parentRegisterView.fieldPassword.getPassword();
         String displayFieldFullName = parentRegisterView.fieldFullName.getText();
-        
+
         if (displayFieldLogin.isEmpty() || (new String(displayFieldPassword)).isEmpty() || displayFieldFullName.isEmpty()) {
             LOG.info("input all field");
             parentRegisterView.labelNotification.setText("input all field");
@@ -64,5 +65,5 @@ public class RegisterController implements ActionListener {
         }
         Arrays.fill(displayFieldPassword, (char) 0);
     }
-    
+
 }

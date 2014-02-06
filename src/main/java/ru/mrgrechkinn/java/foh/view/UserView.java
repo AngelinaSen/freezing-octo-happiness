@@ -16,13 +16,14 @@ import ru.mrgrechkinn.java.foh.controller.UserController;
 
 public class UserView extends JFrame implements View {
 
+    private static final int DEFAULT_WIDTH = 300;
+    private static final int DEFAULT_HEIGHT = 300;
+
     public JTextField fieldLogin;
     public JPasswordField fieldPassword;
     public JLabel labelNotification;
     public JButton buttonRegister;
     public JButton buttonLogin;
-    private static final int DEFAULT_WIDTH = 300;
-    private static final int DEFAULT_HEIGHT = 300;
 
     public UserView() {
         super("Login window");
@@ -68,4 +69,5 @@ public class UserView extends JFrame implements View {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
 }
