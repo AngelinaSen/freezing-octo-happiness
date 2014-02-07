@@ -49,7 +49,10 @@ public class UserController implements ActionListener {
             User user = new User();
             UserDAO userDao = new UserDAOSql();
             user = userDao.findUserByLogin(displayFieldLogin);
-            if (user.getLogin().equals(displayFieldLogin) && user.getPassword().equals(new String(displayFieldPassword))) {
+            if (user == null) {
+                LOG.info("user do not exist");
+                parentView.labelNotification.setText("user do not exist");
+            } else if (user.getLogin().equals(displayFieldLogin) && user.getPassword().equals(new String(displayFieldPassword))) {
                 LOG.info(user.getLogin() + " logged");
                 WorkplaceController.login = user.getLogin();
                 parentView.setVisible(false);
