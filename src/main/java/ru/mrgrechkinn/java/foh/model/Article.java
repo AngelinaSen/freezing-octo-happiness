@@ -1,11 +1,14 @@
 package ru.mrgrechkinn.java.foh.model;
 
+import java.util.Date;
+
 public class Article implements Entity {
 
     private long id;
     private String content;
     private String subject;
     private String author;
+    private Date date;
 
     public String getContent() {
         return content;
@@ -37,6 +40,14 @@ public class Article implements Entity {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
 }

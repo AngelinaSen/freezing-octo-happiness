@@ -3,19 +3,23 @@ package ru.mrgrechkinn.java.foh.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.apache.log4j.Logger;
+
 import ru.mrgrechkinn.java.foh.dao.ArticleDAO;
 import ru.mrgrechkinn.java.foh.dao.ArticleDAOSql;
 import ru.mrgrechkinn.java.foh.model.Article;
+import ru.mrgrechkinn.java.foh.view.ArticleView;
 import ru.mrgrechkinn.java.foh.view.UserView;
-import ru.mrgrechkinn.java.foh.view.WorkplaceView;
 
-public class WorkplaceController implements ActionListener {
+public class ArticleController implements ActionListener {
 
-    public WorkplaceView parentWorkplaceView;
+    private static final Logger LOG = Logger.getLogger(ArticleController.class);
+
+    public ArticleView parentWorkplaceView;
 
     public static String login;
 
-    public WorkplaceController(WorkplaceView workplaceView) {
+    public ArticleController(ArticleView workplaceView) {
         parentWorkplaceView = workplaceView;
     }
 
@@ -32,6 +36,14 @@ public class WorkplaceController implements ActionListener {
             parentWorkplaceView.dispose();
             new UserView();
         }
+        if (e.getSource() == parentWorkplaceView.create) {
+            onCreateArticle();
+        }
+        if (e.getSource() == parentWorkplaceView.exit) {
+            parentWorkplaceView.setVisible(false);
+            parentWorkplaceView.dispose();
+            new UserView();
+        }
     }
 
     private void onCreateArticle() {
@@ -41,13 +53,18 @@ public class WorkplaceController implements ActionListener {
         ArticleDAO articledao = new ArticleDAOSql();
         Article article = new Article();
 
-        article.setSubject(displayFieldSubject);
-        article.setContent(displayFieldContent);
-        article.setAuthor(login);
-        articledao.save(article);
+        if (displayFieldSubject.isEmpty() || displayFieldContent.isEmpty()) {
+            LOG.info("field is empty");
+        } else {
+            article.setSubject(displayFieldSubject);
+            article.setContent(displayFieldContent);
+            article.setAuthor(login);
+            articledao.save(article);
 
-        parentWorkplaceView.fieldSubject.setText("");
-        parentWorkplaceView.fieldContent.setText("");
+            parentWorkplaceView.fieldSubject.setText("");
+            parentWorkplaceView.fieldContent.setText("");
+        }
+
     }
 
 }

@@ -12,10 +12,10 @@ import ru.mrgrechkinn.java.foh.model.User;
 import ru.mrgrechkinn.java.foh.view.RegisterView;
 import ru.mrgrechkinn.java.foh.view.UserView;
 
-
 public class RegisterController implements ActionListener {
 
-    private static final Logger LOG = Logger.getLogger(RegisterController.class);
+    private static final Logger LOG = Logger
+            .getLogger(RegisterController.class);
 
     public RegisterView parentRegisterView;
 
@@ -40,17 +40,22 @@ public class RegisterController implements ActionListener {
 
     private void onRegister(ActionEvent e) {
         String displayFieldLogin = parentRegisterView.fieldLogin.getText();
-        char[] displayFieldPassword = parentRegisterView.fieldPassword.getPassword();
-        String displayFieldFullName = parentRegisterView.fieldFullName.getText();
+        char[] displayFieldPassword = parentRegisterView.fieldPassword
+                .getPassword();
+        String displayFieldFullName = parentRegisterView.fieldFullName
+                .getText();
 
-        if (displayFieldLogin.isEmpty() || (new String(displayFieldPassword)).isEmpty() || displayFieldFullName.isEmpty()) {
+        if (displayFieldLogin.isEmpty()
+                || (new String(displayFieldPassword)).isEmpty()
+                || displayFieldFullName.isEmpty()) {
             LOG.info("input all field");
             parentRegisterView.labelNotification.setText("input all field");
         } else {
             UserDAO userdao = new UserDAOSql();
             if (userdao.findUserByLogin(displayFieldLogin) != null) {
                 LOG.info("incorrect input user, user exist");
-                parentRegisterView.labelNotification.setText("incorrect input user, user exist");
+                parentRegisterView.labelNotification
+                        .setText("incorrect input user, user exist");
             } else {
                 User newUser = new User();
                 newUser.setLogin(displayFieldLogin);

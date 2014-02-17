@@ -41,7 +41,8 @@ public class ArticleDAOSql implements ArticleDAO {
         PreparedStatement statement = null;
         try {
             connection = getConnection();
-            statement = connection.prepareStatement("insert into article values(default, ?, ?, ?)");
+            statement = connection
+                    .prepareStatement("insert into article values(default, ?, ?, ?, now())");
             statement.setString(1, article.getSubject());
             statement.setString(2, article.getContent());
             statement.setString(3, article.getAuthor());
@@ -61,7 +62,8 @@ public class ArticleDAOSql implements ArticleDAO {
         PreparedStatement statement = null;
         try {
             connection = getConnection();
-            statement = connection.prepareStatement("delete from article where subject = ?");
+            statement = connection
+                    .prepareStatement("delete from article where subject = ?");
             statement.setString(1, article.getSubject());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -86,12 +88,13 @@ public class ArticleDAOSql implements ArticleDAO {
             connection = getConnection();
             statement = connection.createStatement();
             resultSet = statement.executeQuery("select * from article");
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 Article article = new Article();
                 article.setId(resultSet.getLong("id"));
                 article.setSubject(resultSet.getString("subject"));
                 article.setContent(resultSet.getString("content"));
                 article.setAuthor(resultSet.getString("author"));
+                article.setDate(resultSet.getDate("date"));
                 articles.add(article);
             }
         } catch (SQLException e) {
@@ -110,8 +113,33 @@ public class ArticleDAOSql implements ArticleDAO {
         ResultSet resultSet = null;
         try {
             connection = getConnection();
-            statement = connection.prepareStatement("select * from article where id = ?");
+            statement = connection
+                    .prepareStatement("select * from article where id = ?");
             statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Article article = new Article();
+                article.setId(resultSet.getLong("id"));
+                article.setSubject(resultSet.getString("subject"));
+                article.setContent(resultSet.getString("content"));
+                article.setAuthor(resultSet.getString("author"));
+                return article;
+            }
+        } catch (SQLException e) {
+            LOG.error(e);
+        }
+        return null;
+    }
+
+    public Article getArticleBySubject(String subject) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = getConnection();
+            statement = connection
+                    .prepareStatement("select * from article where subject = ?");
+            statement.setString(1, subject);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 Article article = new Article();
@@ -134,10 +162,11 @@ public class ArticleDAOSql implements ArticleDAO {
         ResultSet resultSet = null;
         try {
             connection = getConnection();
-            statement = connection.prepareStatement("select * from article where author = ?");
+            statement = connection
+                    .prepareStatement("select * from article where author = ?");
             statement.setString(1, article.getAuthor());
             resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 Article newArticle = new Article();
                 newArticle.setId(resultSet.getLong("id"));
                 newArticle.setSubject(resultSet.getString("subject"));
@@ -163,9 +192,8 @@ public class ArticleDAOSql implements ArticleDAO {
             statement = connection.createStatement();
             statement.execute("CREATE TABLE IF NOT EXISTS ARTICLE ("
                     + " ID INT PRIMARY KEY AUTO_INCREMENT,"
-                    + " SUBJECT VARCHAR(255),"
-                    + " CONTENT VARCHAR(255),"
-                    + " AUTHOR VARCHAR(255),"
+                    + " SUBJECT VARCHAR(255)," + " CONTENT VARCHAR(255),"
+                    + " AUTHOR VARCHAR(255)," + " DATE DATE,"
                     + " FOREIGN KEY (AUTHOR) REFERENCES USER (LOGIN))");
         } catch (SQLException e) {
             LOG.error(e);

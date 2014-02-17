@@ -9,9 +9,9 @@ import org.apache.log4j.Logger;
 import ru.mrgrechkinn.java.foh.dao.UserDAO;
 import ru.mrgrechkinn.java.foh.dao.UserDAOSql;
 import ru.mrgrechkinn.java.foh.model.User;
+import ru.mrgrechkinn.java.foh.view.ArticleView;
 import ru.mrgrechkinn.java.foh.view.RegisterView;
 import ru.mrgrechkinn.java.foh.view.UserView;
-import ru.mrgrechkinn.java.foh.view.WorkplaceView;
 
 
 public class UserController implements ActionListener {
@@ -54,9 +54,9 @@ public class UserController implements ActionListener {
                 parentView.labelNotification.setText("user do not exist");
             } else if (user.getLogin().equals(displayFieldLogin) && user.getPassword().equals(new String(displayFieldPassword))) {
                 LOG.info(user.getLogin() + " logged");
-                WorkplaceController.login = user.getLogin();
+                ArticleController.login = user.getLogin();
                 parentView.setVisible(false);
-                new WorkplaceView();
+                new ArticleView();
             } else {
                 LOG.info("user name or login is incorrect");
                 parentView.labelNotification.setText("user name or login is incorrect");
