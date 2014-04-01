@@ -25,11 +25,14 @@ public class JTreeListener implements TreeSelectionListener {
         ArticleDAOSql articleDao = new ArticleDAOSql();
         Article article = new Article();
 
-        if (selectedNode.isLeaf()) {
-            article = articleDao.getArticleBySubject(selectedNode.toString());
-            parentWorkplaceView.fieldSubject.setText(article.getSubject());
-            parentWorkplaceView.fieldContent.setText(article.getContent());
+        if(selectedNode.getChildCount() != 0) {
+            if (selectedNode.isLeaf()) {
+                article = articleDao.getArticleBySubject(selectedNode.toString());
+                parentWorkplaceView.fieldSubject.setText(article.getSubject());
+                parentWorkplaceView.fieldContent.setText(article.getContent());
+            }
         }
+
     }
 
 }

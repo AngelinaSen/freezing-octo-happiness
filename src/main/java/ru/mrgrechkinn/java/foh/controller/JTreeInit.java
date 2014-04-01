@@ -20,46 +20,50 @@ public class JTreeInit {
         List<Article> articles = new ArrayList<Article>();
         articles.addAll(articleDao.getAllArticle());
         Calendar calendar0 = Calendar.getInstance();
-        calendar0.setTime(articles.get(0).getDate());
-        DefaultMutableTreeNode sub0 = new DefaultMutableTreeNode(
-                calendar0.get(Calendar.YEAR));
-        root.add(sub0);
-        DefaultMutableTreeNode sub1 = new DefaultMutableTreeNode(
-                changeNumericFormat(calendar0.get(Calendar.MONTH)));
-        sub0.add(sub1);
-        DefaultMutableTreeNode sub2 = new DefaultMutableTreeNode(articles
-                .get(0).getSubject());
-        sub1.add(sub2);
-        Calendar calendar1 = Calendar.getInstance();
-        for (int i = 1; i < articles.size(); i++) {
-            calendar1.setTime(articles.get(i).getDate());
-            if (calendar0.get(Calendar.YEAR) == calendar1.get(Calendar.YEAR)) {
-                if (calendar0.get(Calendar.MONTH) == calendar1
-                        .get(Calendar.MONTH)) {
-                    DefaultMutableTreeNode ssub2 = new DefaultMutableTreeNode(
-                            articles.get(i).getSubject());
-                    sub1.add(ssub2);
+        if(articles.isEmpty()) {
+            return tree;
+        } else {
+            calendar0.setTime(articles.get(0).getDate());
+            DefaultMutableTreeNode sub0 = new DefaultMutableTreeNode(
+                    calendar0.get(Calendar.YEAR));
+            root.add(sub0);
+            DefaultMutableTreeNode sub1 = new DefaultMutableTreeNode(
+                    changeNumericFormat(calendar0.get(Calendar.MONTH)));
+            sub0.add(sub1);
+            DefaultMutableTreeNode sub2 = new DefaultMutableTreeNode(articles
+                    .get(0).getSubject());
+            sub1.add(sub2);
+            Calendar calendar1 = Calendar.getInstance();
+            for (int i = 1; i < articles.size(); i++) {
+                calendar1.setTime(articles.get(i).getDate());
+                if (calendar0.get(Calendar.YEAR) == calendar1.get(Calendar.YEAR)) {
+                    if (calendar0.get(Calendar.MONTH) == calendar1
+                            .get(Calendar.MONTH)) {
+                        DefaultMutableTreeNode ssub2 = new DefaultMutableTreeNode(
+                                articles.get(i).getSubject());
+                        sub1.add(ssub2);
+                    } else {
+                        DefaultMutableTreeNode ssub1 = new DefaultMutableTreeNode(
+                                changeNumericFormat(calendar1.get(Calendar.MONTH)));
+                        DefaultMutableTreeNode ssub2 = new DefaultMutableTreeNode(
+                                articles.get(i).getSubject());
+                        sub1.add(ssub1);
+                        ssub1.add(ssub2);
+                    }
                 } else {
+                    DefaultMutableTreeNode ssub0 = new DefaultMutableTreeNode(
+                            calendar1.get(Calendar.YEAR));
                     DefaultMutableTreeNode ssub1 = new DefaultMutableTreeNode(
                             changeNumericFormat(calendar1.get(Calendar.MONTH)));
                     DefaultMutableTreeNode ssub2 = new DefaultMutableTreeNode(
                             articles.get(i).getSubject());
-                    sub1.add(ssub1);
+                    root.add(ssub0);
+                    ssub0.add(ssub1);
                     ssub1.add(ssub2);
                 }
-            } else {
-                DefaultMutableTreeNode ssub0 = new DefaultMutableTreeNode(
-                        calendar1.get(Calendar.YEAR));
-                DefaultMutableTreeNode ssub1 = new DefaultMutableTreeNode(
-                        changeNumericFormat(calendar1.get(Calendar.MONTH)));
-                DefaultMutableTreeNode ssub2 = new DefaultMutableTreeNode(
-                        articles.get(i).getSubject());
-                root.add(ssub0);
-                ssub0.add(ssub1);
-                ssub1.add(ssub2);
             }
+            return tree;
         }
-        return tree;
     }
 
     private static String changeNumericFormat(int number) {
